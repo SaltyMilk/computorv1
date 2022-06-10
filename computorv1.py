@@ -51,9 +51,16 @@ def check_equation_format(equation):
 			print("Invalid chars after operand '" + clean_eq[i] + "'")
 			return
 		i += 1
+
+def parse_eq(eq):
+
+	term_lst = []
+	len_eq = len(eq)
+	i = 0
+	while i < len_eq:
 	
-
-
+	i += 1
+		
 if len(sys.argv) != 2:
 	sys.exit("Incorrect number of argument")
 check_equation_format(sys.argv[1])
