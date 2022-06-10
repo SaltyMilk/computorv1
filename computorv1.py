@@ -1,6 +1,13 @@
 #!/usr/bin/python
 import sys
 
+class Term:
+	def __init__(self, value, degree, sign, side): #ex 4 * 7x = 3 we're focusing on the left term here
+		self.value = value       # 4*7 = 28
+		self.degree = degree     # degree = 1 coz x = x^1 
+		self.sign = sign		 # '+'
+		self.side = side		 # 'l'
+		
 def check_equation_format(equation):
 	authorized_char = [ '0','1', '2', '3', '4', '5', '6', '7', '8', '9', '^', '+', '-', '*' , 'x', 'X', ' ', '=']
 	equation = equation.lower()
