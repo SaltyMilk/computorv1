@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/Users/531-m31c/bin/python
 import sys
 
 class Term:
@@ -9,8 +9,7 @@ class Term:
 		self.side = side		 # 'l'
 		
 def check_equation_format(equation):
-	authorized_char = [ '0','1', '2', '3', '4', '5', '6', '7', '8', '9', '^', '+', '-', '*' , 'x', 'X', ' ', '=']
-	equation = equation.lower()
+	authorized_char = [ '0','1', '2', '3', '4', '5', '6', '7', '8', '9', '^', '+', '-', '*' , 'x', 'X', ' ', '=', '.']
 	for c in equation:
 		if c not in authorized_char:
 			print("Equation contained illegal characters.")
@@ -34,22 +33,23 @@ def check_equation_format(equation):
 			print("The polynomial degree is strictly greater than 2, I can't solve.")
 			return
 		i += 1
-	
+ 
 	clean_eq = equation.replace(' ', '') #remove spaces
 	clean_eq_len = len(clean_eq)
 	i = 0
-	operands = ['*', '+', '-', '=']
+	operands = ['*', '+', '-', '=', '.']
 
 	while i < clean_eq_len:
 		if clean_eq[i] in operands and (i == 0 or i == clean_eq_len - 1):
 			print("Bad use of operator '" + clean_eq[i] + "'")
 			return
-		if clean_eq[i] in operands and not (clean_eq[i - 1].isdigit() or clean_eq[i - 1] == 'x'):
+		if clean_eq[i] in operands and not (clean_eq[i - 1].isdigit() or (clean_eq[i - 1] == 'x' and clean_eq[i] != '.')):
 			print("Invalid chars before operand '" + clean_eq[i] + "'")
 			return
-		if clean_eq[i] in operands and not (clean_eq[i + 1].isdigit() or clean_eq[i + 1] == 'x'):
+		if clean_eq[i] in operands and not (clean_eq[i + 1].isdigit() or (clean_eq[i + 1] == 'x' and clean_eq[i] != '.')):
 			print("Invalid chars after operand '" + clean_eq[i] + "'")
 			return
+		
 		i += 1
 
 def parse_eq(eq):
@@ -58,11 +58,14 @@ def parse_eq(eq):
 	len_eq = len(eq)
 	i = 0
 	while i < len_eq:
-	
-	i += 1
+		i += 1
 		
 if len(sys.argv) != 2:
 	sys.exit("Incorrect number of argument")
-check_equation_format(sys.argv[1])
+
+eqx = sys.argv[1].lower()
+eqx = eqx.replace(" ", "")
+print(eqx)
+check_equation_format(eqx)
 
 
