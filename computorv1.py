@@ -34,12 +34,15 @@ def check_equation_format(equation):
 			return
 		i += 1
  
-	clean_eq = equation.replace(' ', '') #remove spaces
+	clean_eq = equation #remove spaces
 	clean_eq_len = len(clean_eq)
 	i = 0
 	operands = ['*', '+', '-', '=', '.']
 
 	while i < clean_eq_len:
+		if (i == 0 and (clean_eq[i] == '+' or clean_eq[i] == '-')):
+			i += 1
+			continue
 		if clean_eq[i] in operands and (i == 0 or i == clean_eq_len - 1):
 			print("Bad use of operator '" + clean_eq[i] + "'")
 			return
@@ -52,14 +55,37 @@ def check_equation_format(equation):
 		
 		i += 1
 
+def parse_terms_strings(side):
+	terms = []
+	tmp_s = ""
+
+	i = 0	
+	for c in side: #parse left side, we're basically splitting on '+' or '-' and keeping the signs
+		if (i == 0):
+			i += 1
+			tmp_s += c
+			continue
+		elif c == '+' or c == '-':
+			terms.append(tmp_s)
+			tmp_s = ""
+		tmp_s += c
+
+	terms.append(tmp_s)
+	return terms
+
+
+# "5 * X^0 + 4 * X^1 - 9.3 * X^2 = 1 * X^0"
 def parse_eq(eq):
 
-	term_lst = []
-	len_eq = len(eq)
-	i = 0
-	while i < len_eq:
-		i += 1
-		
+	sides = eq.split('=')
+	
+	left_s = parse_terms_strings(sides[0])
+	right_s = parse_terms_strings(sides[1])
+	print(left_s)
+	print(right_s)
+
+
+
 if len(sys.argv) != 2:
 	sys.exit("Incorrect number of argument")
 
@@ -67,5 +93,5 @@ eqx = sys.argv[1].lower()
 eqx = eqx.replace(" ", "")
 print(eqx)
 check_equation_format(eqx)
-
+parse_eq(eqx)
 
