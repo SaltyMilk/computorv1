@@ -1,4 +1,6 @@
-#!/Users/531-m31c/bin/python
+#!/usr/bin/python
+
+##!/Users/531-m31c/bin/python
 import sys
 
 
@@ -38,9 +40,12 @@ def check_equation_format(equation):
 		if (i == 0 and (clean_eq[i] == '+' or clean_eq[i] == '-')):
 			i += 1
 			continue
+                if clean_eq[i] == '=' and i + 1 < clean_eq_len and (clean_eq[i + 1] == '+' or clean_eq[i + 1] == '-'):
+                    i += 1
+                    continue
 		if clean_eq[i] in operands and (i == 0 or i == clean_eq_len - 1):
 			sys.exit("Bad use of operator '" + clean_eq[i] + "'")
-		if clean_eq[i] in operands and not (clean_eq[i - 1].isdigit() or (clean_eq[i - 1] == 'x' and clean_eq[i] != '.')):
+		if clean_eq[i] in operands and not (clean_eq[i - 1].isdigit() or (clean_eq[i - 1] == 'x' and clean_eq[i] != '.')) and ((clean_eq[i] == '+' or clean_eq[i] == '-') and clean_eq[i - 1] != '='):
 			sys.exit("Invalid chars before operand '" + clean_eq[i] + "'")
 		if clean_eq[i] in operands and not (clean_eq[i + 1].isdigit() or (clean_eq[i + 1] == 'x' and clean_eq[i] != '.')):
 			sys.exit("Invalid chars after operand '" + clean_eq[i] + "'")
@@ -78,7 +83,7 @@ def strs_to_term(strs, side):
 	if len_sp == 2:
 		i = 0
 		for c in sp['x' in sp[1]]:
-			if c == 'x' and sp['x' in sp[1]][i + 1] != '^':
+			if c == 'x' and '^' not in sp['x' in sp[1]]:
 				term.degree = 1
 				break
 			elif c == '^':
@@ -94,7 +99,7 @@ def strs_to_term(strs, side):
 		if 'x' in sp[0]:
 			i = 0
 			for c in sp[0]:
-				if c == 'x' and sp[0][i + 1] != '^':
+				if c == 'x' and not '^' in sp[0]:
 					term.degree = 1
 					break
 				elif c == '^':
