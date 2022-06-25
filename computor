@@ -154,15 +154,20 @@ def parse_eq(eq):
 		termlst.append(strs_to_term(t, 'l'))
 	for t in right_s:
 		termlst.append(strs_to_term(t, 'r'))
-
-	for x in termlst:
-		print(vars(x))
-
 	reduced = reduce(termlst)
 	print("Reduced:")
-	for x in reduced:
-		print(vars(x))
+	#Let's find the real polynomial degree
+	maxi = 0
+	for x in reduced: 
+		print(vars(x))#debug
+		if x.value != 0 and x.degree > maxi:
+			maxi = x.degree
+	g_degree = maxi #this is the real polynomial degree
+	
 	print("Polynomial degree: " + str(g_degree))
+	if g_degree > 2:
+		sys.exit("The polynomial degree is strictly greater than 2, I can't solve.")
+
 
 def str_count_digit(s):
 	i = 0
