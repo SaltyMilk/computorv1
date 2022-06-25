@@ -1,6 +1,5 @@
-#!/usr/bin/python
-
-##!/Users/531-m31c/bin/python
+#!/Users/531-m31c/bin/python
+##!/usr/bin/python
 import sys
 
 
@@ -27,8 +26,8 @@ def check_equation_format(equation):
 			sys.exit("Missing 'x' before '^'.")
 		if equation[i] == '^' and not equation[i + 1].isdigit():
 			sys.exit("Invalid char after '^'.")
-		if equation[i] == '^' and equation[i + 1] > '2':
-			sys.exit("The polynomial degree is strictly greater than 2, I can't solve.")
+#		if equation[i] == '^' and equation[i + 1] > '2':
+#			sys.exit("The polynomial degree is strictly greater than 2, I can't solve.")
 		i += 1
  
 	clean_eq = equation #remove spaces
@@ -122,9 +121,8 @@ def strs_to_term(strs, side):
 def reduce(terms):
 	reduced_terms = []
 	#Create needed terms to have form  'a * x^0 + b * x^1 + c * x^2 = 0'
-	reduced_terms.append(Term(0, 0, 1, 'l'))
-	reduced_terms.append(Term(0, 1, 1, 'l'))
-	reduced_terms.append(Term(0, 2, 1, 'l'))
+	for x in range(g_degree + 1):
+		reduced_terms.append(Term(0, x, 1, 'l'))
 
 	#For intermediate steps bonus print before and after this
 	#first we gonna pass all the terms to the left
@@ -164,15 +162,38 @@ def parse_eq(eq):
 	print("Reduced:")
 	for x in reduced:
 		print(vars(x))
+	print("Polynomial degree: " + str(g_degree))
 
+def str_count_digit(s):
+	i = 0
+	for c in s:
+		if c > '9' or c < '0':
+			break
+		i += 1
+	return i
 
+def get_poly_degree(s):
+	i = 0
+	maxi = 0
+	if 'x' in s:
+		maxi = 1
+	while i < len(s):
+		if s[i] == '^':
+			i += 1
+			tmp = int(s[i: i + str_count_digit(s[i:len(s)])])
+			if tmp > maxi:
+				maxi = tmp
+		i += 1
+	return maxi
+
+g_degree = 0
 #main
 if len(sys.argv) != 2:
 	sys.exit("Incorrect number of argument")
 
 eqx = sys.argv[1].lower()
 eqx = eqx.replace(" ", "")
-print(eqx)
 check_equation_format(eqx)
+g_degree = get_poly_degree(eqx)
 parse_eq(eqx)
 
