@@ -183,15 +183,15 @@ def resolvex(tlst):
 		zero_resolve(tlst)
 	elif g_degree == 1:
 		first_resolve(tlst)
-#	elif g_degree == 2:
-#		second_resolve(tlst)
+	elif g_degree == 2:
+		second_resolve(tlst)
 
 
 def zero_resolve(tlst):
 	if tlst[0].value == 0:
 		print("The solution is:\nAll real numbers.")
 	else:
-		print("The solution is:\nNo solution.")
+		print("The solution is:\nNo real solution.")
 
 # a + bx = 0 -> x = -a/b
 def first_resolve(tlst):
@@ -199,6 +199,35 @@ def first_resolve(tlst):
 	print("x = " + str(tlst[0].value * -1) + " / " + str(tlst[1].value))
 	print("--------------Resolve end---------------")
 	print("The solution is:\n" + str((tlst[0].value * -1) / tlst[1].value ))
+
+#a * x^2  + b * x + c = 0
+def second_resolve(tlst):
+	a = tlst[2].value
+	b = tlst[1].value
+	c =	tlst[0].value
+
+	delta = b * b - 4 * a * c # Delta = b^2 - 4ac.
+	if delta > 0:
+		print("-------------Resolve steps--------------")
+		print("Discriminant = " + str(b) + "*" + str(b) + "- 4 *" + str(a) + "*" + str(c))  
+		print("x1 = (-1 * "+ str(b) + "+ V("+str(b)+ " * "+ str(b) + "-4 * "+ str(a) + " * "+ str(c) +") ) / 2 * "+ str(a))
+		print("x2 = (-1 * "+ str(b) + "- V("+str(b)+ " * "+ str(b) + "-4 * "+ str(a) + " * "+ str(c) +") ) / 2 * "+ str(a))
+		print("--------------Resolve end---------------")
+		print("Discriminant is strictly positive, the two solutions are:")
+		print((-b + mysqrt(delta)) / (2 * a))
+		print((-b - mysqrt(delta)) / (2 * a))
+	elif delta == 0:
+		print("-------------Resolve steps--------------")
+		print("Discriminant = " + str(b) + "*" + str(b) + "- 4 *" + str(a) + "*" + str(c))  
+		print("x = (-1 * "+ str(b) +  +" ) / 2 * "+ str(a))
+		print("--------------Resolve end---------------")
+		print("Discriminant is equal to zero, the solution is:")
+		print(-b / (2 * a))
+	elif delta < 0:
+		print("-------------Resolve steps--------------")
+		print("Discriminant = " + str(b) + "*" + str(b) + "- 4 *" + str(a) + "*" + str(c))  
+		print("--------------Resolve end---------------")
+		print("Discriminant is negative, the solution is:\nNo real solution.")
 
 def str_count_digit(s):
 	i = 0
@@ -230,7 +259,7 @@ def print_eq(tlist):
 	empty_lside = True
 	for t in tlist:
 		if t.side == 'l' and t.value != 0:
-			empty_rside = False
+			empty_lside = False
 	if empty_lside:
 		print("0"),
 
@@ -262,6 +291,29 @@ def print_eq(tlist):
 		print("= 0"),
 
 	print("\033[0m")
+
+def mysqrt(n):
+	lo = n if n < 1 else 1
+	hi = n if n > 1 else 1
+
+	while (100 * lo * lo < n):
+		lo *= 10
+	while (0.01 * hi * hi > n):
+		hi *= 0.1
+
+	i = 0
+	while i < 100:
+		mid = (lo + hi) / 2
+		if mid * mid == n:
+			return mid
+		if mid * mid > n:
+			hi = mid
+		else:
+			lo = mid
+		i += 1
+
+	return mid
+
 
 
 g_degree = 0
