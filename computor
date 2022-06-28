@@ -8,7 +8,7 @@ class Term:
 		self.value = value       # 4*7 = 28
 		self.degree = degree     # degree = 1 coz x = x^1 
 		self.sign = sign		 # 1 or -1
-		self.side = side		 # 'l'
+		self.side = side		 # 'l' or 'r'
 		
 def check_equation_format(equation):
 	authorized_char = [ '0','1', '2', '3', '4', '5', '6', '7', '8', '9', '^', '+', '-', '*' , 'x', 'X', ' ', '=', '.']
@@ -93,7 +93,7 @@ def strs_to_term(strs, side):
 		term.sign = 1
 		if term.value < 0:
 			term.sign = -1
-			term.value *= -1
+			#term.value *= -1
 	else:
 		if 'x' in sp[0]:
 			i = 0
@@ -114,7 +114,7 @@ def strs_to_term(strs, side):
 			term.sign = 1
 			if term.value < 0:
 				term.sign = -1
-				term.value *= -1
+	#			term.value *= -1
 				term.degree = 0
 	return term
 
@@ -123,30 +123,33 @@ def reduce(terms):
 	#Create needed terms to have form  'a * x^0 + b * x^1 + c * x^2 = 0'
 	for x in range(g_degree + 1):
 		reduced_terms.append(Term(0, x, 1, 'l'))
-
 	#For intermediate steps bonus print before and after this
 	#first we gonna pass all the terms to the left
 	for t in terms:
 		if t.side == 'r':
 			t.sign *= -1
+			t.value *= -1
 			t.side = 'l'
 
+	print("Passing all the terms to the left side:"),
+	print_eq(terms)
 	
 	for t in terms:
-		reduced_terms[t.degree].value += (t.value * t.sign)
-
-	#hmmm while developping this, realised the sign attribute is useless. Value can now be negative and sign will just stay 1
+		reduced_terms[t.degree].value += t.value
+	print("Add terms of same degree together:"),
+	print_eq(reduced_terms)
 	
 	return reduced_terms
 
 
 # "5 * X^0 + 4 * X^1 - 9.3 * X^2 = 1 * X^0"
 def parse_eq(eq):
+	global g_degree
+	print("-----------Intermediate steps-----------")
 	sides = eq.split('=')
 	
 	left_s = parse_terms_strings(sides[0])
 	right_s = parse_terms_strings(sides[1])
-	print(left_s + right_s)
 	
 
 	termlst = []
@@ -154,12 +157,17 @@ def parse_eq(eq):
 		termlst.append(strs_to_term(t, 'l'))
 	for t in right_s:
 		termlst.append(strs_to_term(t, 'r'))
+	print("Parsing equation:"),
+	print_eq(termlst)
 	reduced = reduce(termlst)
-	print("Reduced:")
+	print("--------Intermediate steps break--------")
+	
+	print("Reduced:"),
+	print_eq(reduced)
 	#Let's find the real polynomial degree
 	maxi = 0
 	for x in reduced: 
-		print(vars(x))#debug
+#		print(vars(x))#debug
 		if x.value != 0 and x.degree > maxi:
 			maxi = x.degree
 	g_degree = maxi #this is the real polynomial degree
@@ -167,7 +175,23 @@ def parse_eq(eq):
 	print("Polynomial degree: " + str(g_degree))
 	if g_degree > 2:
 		sys.exit("The polynomial degree is strictly greater than 2, I can't solve.")
+	print(g_degree)
+	resolvex(reduced)
 
+def resolvex(tlst):
+	global g_degree
+	if g_degree == 0:
+		zero_resolve(tlst)
+#	elif g_degree == 1:
+#		first_resolve(tlst)
+#	elif g_degree == 2:
+#		second_resolve(tlst)
+
+def zero_resolve(tlst):
+	if tlst[0].value == 0:
+		print("The solution is:\nAll real numbers.")
+	else:
+		print("The solution is:\nNo solution.")
 
 def str_count_digit(s):
 	i = 0
@@ -191,6 +215,40 @@ def get_poly_degree(s):
 		i += 1
 	return maxi
 
+def print_eq(tlist):
+	print("\033[92m"),
+	i = 0
+	bf = False
+	for x in tlist:
+		if bf == False and x.side == 'r':
+			bf = True
+			print("="),
+			i = 0
+		if x.value < 0:
+				print("-"),
+		elif x.value > 0 and i > 0:
+				print("+"),
+		if x.value != 0:
+			if x.value / int(x.value) == 1: #no digits after dot
+				print(int(x.value) if x.value > 0 else int(x.value) * -1),
+			else:
+				print(x.value if x.value > 0 else x.value * -1),
+			if x.degree == 1:
+				print("* X"),
+			elif x.degree > 1:
+				print("* X^" + str(x.degree)),
+		i += 1
+
+	empty_rside = True
+	for t in tlist:
+		if t.side == 'r':
+			empty_rside = False
+	if empty_rside:
+		print("= 0"),
+
+	print("\033[0m")
+
+
 g_degree = 0
 #main
 if len(sys.argv) != 2:
@@ -200,5 +258,6 @@ eqx = sys.argv[1].lower()
 eqx = eqx.replace(" ", "")
 check_equation_format(eqx)
 g_degree = get_poly_degree(eqx)
+print("t=" + str(g_degree))
 parse_eq(eqx)
 
