@@ -175,23 +175,30 @@ def parse_eq(eq):
 	print("Polynomial degree: " + str(g_degree))
 	if g_degree > 2:
 		sys.exit("The polynomial degree is strictly greater than 2, I can't solve.")
-	print(g_degree)
 	resolvex(reduced)
 
 def resolvex(tlst):
 	global g_degree
 	if g_degree == 0:
 		zero_resolve(tlst)
-#	elif g_degree == 1:
-#		first_resolve(tlst)
+	elif g_degree == 1:
+		first_resolve(tlst)
 #	elif g_degree == 2:
 #		second_resolve(tlst)
+
 
 def zero_resolve(tlst):
 	if tlst[0].value == 0:
 		print("The solution is:\nAll real numbers.")
 	else:
 		print("The solution is:\nNo solution.")
+
+# a + bx = 0 -> x = -a/b
+def first_resolve(tlst):
+	print("-------------Resolve steps--------------")
+	print("x = " + str(tlst[0].value * -1) + " / " + str(tlst[1].value))
+	print("--------------Resolve end---------------")
+	print("The solution is:\n" + str((tlst[0].value * -1) / tlst[1].value ))
 
 def str_count_digit(s):
 	i = 0
@@ -219,6 +226,14 @@ def print_eq(tlist):
 	print("\033[92m"),
 	i = 0
 	bf = False
+	
+	empty_lside = True
+	for t in tlist:
+		if t.side == 'l' and t.value != 0:
+			empty_rside = False
+	if empty_lside:
+		print("0"),
+
 	for x in tlist:
 		if bf == False and x.side == 'r':
 			bf = True
@@ -241,7 +256,7 @@ def print_eq(tlist):
 
 	empty_rside = True
 	for t in tlist:
-		if t.side == 'r':
+		if t.side == 'r' and t.value != 0:
 			empty_rside = False
 	if empty_rside:
 		print("= 0"),
@@ -258,6 +273,5 @@ eqx = sys.argv[1].lower()
 eqx = eqx.replace(" ", "")
 check_equation_format(eqx)
 g_degree = get_poly_degree(eqx)
-print("t=" + str(g_degree))
 parse_eq(eqx)
 
