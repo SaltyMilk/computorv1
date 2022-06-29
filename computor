@@ -213,8 +213,8 @@ def second_resolve(tlst):
 	if delta > 0:
 		print("-------------Resolve steps--------------")
 		print("Discriminant = " + str(b) + " * " + str(b) + " - 4 * " + str(a) + " * " + str(c))  
-		print("x1 = (-1 * "+ str(b) + "+ V("+str(b)+ " * "+ str(b) + "-4 * "+ str(a) + " * "+ str(c) +") ) / 2 * "+ str(a))
-		print("x2 = (-1 * "+ str(b) + "- V("+str(b)+ " * "+ str(b) + "-4 * "+ str(a) + " * "+ str(c) +") ) / 2 * "+ str(a))
+		print("x1 = (-1 * "+ str(b) + " + V("+str(b)+ " * "+ str(b) + " - 4 * "+ str(a) + " * "+ str(c) +") ) / 2 * "+ str(a))
+		print("x2 = (-1 * "+ str(b) + " - V("+str(b)+ " * "+ str(b) + " - 4 * "+ str(a) + " * "+ str(c) +") ) / 2 * "+ str(a))
 		print("--------------Resolve end---------------")
 		print("Discriminant is strictly positive, the two solutions are:")
 		print((-b + mysqrt(delta)) / (2 * a))
@@ -260,7 +260,7 @@ def get_poly_degree(s):
 
 def print_eq(tlist):
 	print("\033[92m"),
-	i = 0
+	first_term = True
 	bf = False
 	
 	empty_lside = True
@@ -274,12 +274,13 @@ def print_eq(tlist):
 		if bf == False and x.side == 'r':
 			bf = True
 			print("="),
-			i = 0
+			first_term = True
 		if x.value < 0:
 				print("-"),
-		elif x.value > 0 and i > 0:
+		elif x.value > 0 and not first_term:
 				print("+"),
 		if x.value != 0:
+			first_term = False
 			if x.value / int(x.value) == 1: #no digits after dot
 				print(int(x.value) if x.value > 0 else int(x.value) * -1),
 			else:
@@ -288,7 +289,6 @@ def print_eq(tlist):
 				print("* X"),
 			elif x.degree > 1:
 				print("* X^" + str(x.degree)),
-		i += 1
 
 	empty_rside = True
 	for t in tlist:
