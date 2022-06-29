@@ -281,10 +281,10 @@ def print_eq(tlist):
 				print("+"),
 		if x.value != 0:
 			first_term = False
-			if x.value / int(x.value) == 1: #no digits after dot
-				print(int(x.value) if x.value > 0 else int(x.value) * -1),
-			else:
-				print(x.value if x.value > 0 else x.value * -1),
+	#		if x.value / int(x.value) == 1: #no digits after dot
+	#			print(int(x.value) if x.value > 0 else int(x.value) * -1),
+	#		else:
+			print(x.value if x.value > 0 else x.value * -1),
 			if x.degree == 1:
 				print("* X"),
 			elif x.degree > 1:
