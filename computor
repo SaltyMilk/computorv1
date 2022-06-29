@@ -12,6 +12,7 @@ class Term:
 		
 def check_equation_format(equation):
 	authorized_char = [ '0','1', '2', '3', '4', '5', '6', '7', '8', '9', '^', '+', '-', '*' , 'x', 'X', ' ', '=', '.']
+	operands = ['*', '+', '-', '=', '.']
 	for c in equation:
 		if c not in authorized_char:
 			sys.exit("Equation contained illegal characters.")
@@ -20,6 +21,8 @@ def check_equation_format(equation):
 	eq_len = len(equation)
 	i = 0
 	while i < eq_len:
+		if i > 0 and equation[i] == 'x' and equation[i - 1] not in operands:
+			sys.exit("Not in polynomial form.")
 		if equation[i] == '^' and ( i == 0 or i == eq_len -1): #exponent bad format for sure |^ or ^|
 			sys.exit("Bad use of exponent operator '^'.")
 		if equation[i] == '^' and not (equation[i - 1] == 'x'):
@@ -33,7 +36,6 @@ def check_equation_format(equation):
 	clean_eq = equation #remove spaces
 	clean_eq_len = len(clean_eq)
 	i = 0
-	operands = ['*', '+', '-', '=', '.']
 
 	while i < clean_eq_len:
 		if (i == 0 and (clean_eq[i] == '+' or clean_eq[i] == '-')):
@@ -50,6 +52,7 @@ def check_equation_format(equation):
 			sys.exit("Invalid chars after operand '" + clean_eq[i] + "'")
 		
 		i += 1
+	i =	0
 
 def parse_terms_strings(side):
 	terms = []
@@ -219,7 +222,7 @@ def second_resolve(tlst):
 	elif delta == 0:
 		print("-------------Resolve steps--------------")
 		print("Discriminant = " + str(b) + "*" + str(b) + "- 4 *" + str(a) + "*" + str(c))  
-		print("x = (-1 * "+ str(b) +  +" ) / 2 * "+ str(a))
+		print("x = (-1 * "+ str(b)  +" ) / 2 * "+ str(a))
 		print("--------------Resolve end---------------")
 		print("Discriminant is equal to zero, the solution is:")
 		print(-b / (2 * a))
@@ -227,7 +230,7 @@ def second_resolve(tlst):
 		print("-------------Resolve steps--------------")
 		print("Discriminant = " + str(b) + "*" + str(b) + "- 4 *" + str(a) + "*" + str(c))  
 		print("--------------Resolve end---------------")
-		print("Discriminant is negative, the solution is:\nNo real solution.")
+		print("Discriminant is strictly  negative, the solution is:\nNo real solution.")
 
 def str_count_digit(s):
 	i = 0
