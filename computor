@@ -212,7 +212,7 @@ def second_resolve(tlst):
 	delta = b * b - 4 * a * c # Delta = b^2 - 4ac.
 	if delta > 0:
 		print("-------------Resolve steps--------------")
-		print("Discriminant = " + str(b) + "*" + str(b) + "- 4 *" + str(a) + "*" + str(c))  
+		print("Discriminant = " + str(b) + " * " + str(b) + " - 4 * " + str(a) + " * " + str(c))  
 		print("x1 = (-1 * "+ str(b) + "+ V("+str(b)+ " * "+ str(b) + "-4 * "+ str(a) + " * "+ str(c) +") ) / 2 * "+ str(a))
 		print("x2 = (-1 * "+ str(b) + "- V("+str(b)+ " * "+ str(b) + "-4 * "+ str(a) + " * "+ str(c) +") ) / 2 * "+ str(a))
 		print("--------------Resolve end---------------")
@@ -221,16 +221,20 @@ def second_resolve(tlst):
 		print((-b - mysqrt(delta)) / (2 * a))
 	elif delta == 0:
 		print("-------------Resolve steps--------------")
-		print("Discriminant = " + str(b) + "*" + str(b) + "- 4 *" + str(a) + "*" + str(c))  
+		print("Discriminant = " + str(b) + " * " + str(b) + " - 4 * " + str(a) + " * " + str(c))  
 		print("x = (-1 * "+ str(b)  +" ) / 2 * "+ str(a))
 		print("--------------Resolve end---------------")
 		print("Discriminant is equal to zero, the solution is:")
 		print(-b / (2 * a))
 	elif delta < 0:
 		print("-------------Resolve steps--------------")
-		print("Discriminant = " + str(b) + "*" + str(b) + "- 4 *" + str(a) + "*" + str(c))  
+		print("Discriminant = " + str(b) + " * " + str(b) + " - 4 * " + str(a) + " * " + str(c))  
+		print("x1 = (-1 * " + str(b) +  ") / (2 * " + str(a) +") + i * V(-1 * " + str(delta) + ") / (2 * "+str(a) + ")")
+		print("x2 = (-1 * " + str(b) +  ") / (2 * " + str(a) +") - i * V(-1 * " + str(delta) + ") / (2 * "+str(a) + ")")
 		print("--------------Resolve end---------------")
-		print("Discriminant is strictly  negative, the solution is:\nNo real solution.")
+		print("Discriminant is strictly negative, the solutions are:")
+		print(str(-b / (2 *a)) + " + i * " + str(mysqrt(-delta) / (2 * a)) )
+		print(str(-b / (2 *a)) + " - i * " + str(mysqrt(-delta) / (2 * a)) )
 
 def str_count_digit(s):
 	i = 0
@@ -328,6 +332,5 @@ eqx = sys.argv[1].lower()
 eqx = eqx.replace(" ", "")
 check_equation_format(eqx)
 g_degree = get_poly_degree(eqx)
-print("degree="+ str(g_degree))
 parse_eq(eqx)
 
