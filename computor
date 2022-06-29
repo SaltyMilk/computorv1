@@ -89,7 +89,7 @@ def strs_to_term(strs, side):
 				term.degree = 1
 				break
 			elif c == '^':
-				term.degree = int(sp['x' in sp[1]][i + 1])
+				term.degree = int(sp['x' in sp[1]][i + 1: i + 1 +str_count_digit(sp['x' in sp[1]][i + 1: len(sp['x' in sp[1]] )] ) ])
 				break
 			i += 1
 		term.value = float(sp[not 'x' in sp[1]])
@@ -105,7 +105,7 @@ def strs_to_term(strs, side):
 					term.degree = 1
 					break
 				elif c == '^':
-					term.degree = int(sp[0][i + 1])
+					term.degree = int(sp[0][i + 1: i + 1 +str_count_digit(sp[0][i+1:len(sp[0])])])
 					break
 				i += 1
 			term.value = 1
@@ -328,5 +328,6 @@ eqx = sys.argv[1].lower()
 eqx = eqx.replace(" ", "")
 check_equation_format(eqx)
 g_degree = get_poly_degree(eqx)
+print("degree="+ str(g_degree))
 parse_eq(eqx)
 
