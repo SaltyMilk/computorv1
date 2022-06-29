@@ -53,6 +53,17 @@ def check_equation_format(equation):
 		
 		i += 1
 	i =	0
+	while i < clean_eq_len:
+		if clean_eq[i] == '^':
+			i += 1
+			while i < clean_eq_len:
+				if clean_eq[i] < '0' or clean_eq[i] > '9':
+					if clean_eq[i] == '.':
+						sys.exit("WHAT IS THAT DOT DOING THERE ???!! Just joking but don't try float powers.")
+					else:
+						break
+				i += 1
+		i += 1
 
 def parse_terms_strings(side):
 	terms = []
@@ -281,10 +292,10 @@ def print_eq(tlist):
 				print("+"),
 		if x.value != 0:
 			first_term = False
-	#		if x.value / int(x.value) == 1: #no digits after dot
-	#			print(int(x.value) if x.value > 0 else int(x.value) * -1),
-	#		else:
-			print(x.value if x.value > 0 else x.value * -1),
+			if not bool(int(x.value)-x.value): #no digits after dot
+				print(int(x.value) if x.value > 0 else int(x.value) * -1),
+			else:
+				print(x.value if x.value > 0 else x.value * -1),
 			if x.degree == 1:
 				print("* X"),
 			elif x.degree > 1:
