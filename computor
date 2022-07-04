@@ -171,8 +171,8 @@ def parse_eq(eq):
 		termlst.append(strs_to_term(t, 'l'))
 	for t in right_s:
 		termlst.append(strs_to_term(t, 'r'))
-	print("Parsing equation:"),
-	print_eq(termlst)
+#	print("Parsing equation:"),
+#	print_eq(termlst)
 	reduced = reduce(termlst)
 	print("--------Intermediate steps break--------")
 	
